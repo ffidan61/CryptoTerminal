@@ -1,0 +1,11 @@
+language: python
+python:
+  - 3.6
+script:
+  - python setup.py install
+  - cryptoterminal -a btc --amt 0.324
+  - cryptoterminal -a eth --amt 22
+  - cryptoterminal -a xby --amt 1223
+  - cryptoterminal -a bch --amt 121
+  - cryptoterminal -c eur -p
+  - cryptoterminal -i dsf eth asd
