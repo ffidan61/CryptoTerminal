@@ -84,20 +84,31 @@ class CryptoTerminal():
         try:
             return json.load(open(os.path.expanduser("~/watchlist.json")))
         except IOError:
-            self.save_watchlist({})
+            self.save_watchlist([])
             return {}
 
     def add_watchlist(self, coins):
         all_coin_data = self.get_all_coins()
         watchlist = self.get_watchlist()
-        for coin in coins:
-            if coin.upper() in watchlist:
-                pass
-                #print("{} is already in your watchlist".format(coin.upper()))
-            elif coin.upper() in all_coin_data:
-                watchlist.append(coin.upper())
-                self.save_watchlist(watchlist)
-                #print("{} added to your watchlist".format(coin.upper()))      
+        if len(watchlist) == 0:
+            watchlist = []
+            for coin in coins:
+                if coin.upper() in watchlist:
+                    pass
+                    #print("{} is already in your watchlist".format(coin.upper()))
+                elif coin.upper() in all_coin_data:
+                    watchlist.append(coin.upper())
+                    self.save_watchlist(watchlist)
+                    #print("{} added to your watchlist".format(coin.upper())) 
+        else:
+            for coin in coins:
+                if coin.upper() in watchlist:
+                    pass
+                    #print("{} is already in your watchlist".format(coin.upper()))
+                elif coin.upper() in all_coin_data:
+                    watchlist.append(coin.upper())
+                    self.save_watchlist(watchlist)
+                    #print("{} added to your watchlist".format(coin.upper()))      
 
     def remove_watchlist(self, coins):
         watchlist_data = self.get_watchlist()
