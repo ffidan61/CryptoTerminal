@@ -8,4 +8,7 @@ script:
   - cryptoterminal -a xby --amt 1223
   - cryptoterminal -a bch --amt 121
   - cryptoterminal -c eur -p
-  - cryptoterminal -i dsf eth asd
+  - cryptoterminal -i dsf eth asd btc 
+  - cryptoterminal -aw loom ark ftc
+  - cryptoterminal -rmw ark
+  - cryptoterminal -w
