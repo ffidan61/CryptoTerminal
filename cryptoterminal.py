@@ -157,7 +157,7 @@ class CryptoTerminal():
                 "{}".format(round(price_data[k][self.currency]*v,round_fiat))\
                 ])
                 total_value += price_data[k][self.currency]*v
-            print(p)
+            print(p.get_string(sortby = None, reversesort=True))
             print("Total Value: {v} {c}".format(v=round(total_value,2), c=self.currency))
         else:
             sys.exit("Please add coins to your portfolio")
@@ -185,12 +185,12 @@ class CryptoTerminal():
                 #price
                 "{}".format(api_data[coin][self.currency]["PRICE"]),\
                 #cange
-                "{} %".format(api_data[coin][self.currency]["CHANGEPCT24HOUR"]),\
+                "{}".format(api_data[coin][self.currency]["CHANGEPCT24HOUR"]),\
                 #marketcap
                 "{}".format(api_data[coin][self.currency]["MKTCAP"])\
                 ]
                 )
-            print(p)
+            print(p.get_string(sortby = None, reversesort=True))
         else:
             sys.exit("No supported coin found")
     
@@ -217,7 +217,7 @@ class CryptoTerminal():
                 "{}".format(api_data[coin][self.currency]["MKTCAP"])\
                 ]
                 )
-            print(p)
+            print(p.get_string(sortby = None, reversesort=True))
         else:
             sys.exit("No watchlist file found")
 
