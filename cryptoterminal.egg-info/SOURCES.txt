@@ -1,9 +1,0 @@
-README.md
-cryptoterminal.py
-setup.py
-cryptoterminal.egg-info/PKG-INFO
-cryptoterminal.egg-info/SOURCES.txt
-cryptoterminal.egg-info/dependency_links.txt
-cryptoterminal.egg-info/entry_points.txt
-cryptoterminal.egg-info/requires.txt
-cryptoterminal.egg-info/top_level.txt
