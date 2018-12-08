@@ -96,7 +96,8 @@ class CryptoTerminal():
                 #print("{} is already in your watchlist".format(coin.upper()))
             elif coin.upper() in all_coin_data:
                 watchlist.append(coin.upper())
-                self.save_watchlist(watchlist)      
+                self.save_watchlist(watchlist)
+                #print("{} added to your watchlist".format(coin.upper()))      
 
     def remove_watchlist(self, coins):
         watchlist_data = self.get_watchlist()
@@ -136,7 +137,7 @@ class CryptoTerminal():
                 #price
                 "{}".format(api_data[k][self.currency]["PRICE"]),\
                 #change
-                "{} %".format(api_data[k][self.currency]["CHANGEPCT24HOUR"]),\
+                "{}".format(api_data[k][self.currency]["CHANGEPCT24HOUR"]),\
                 #marketcap
                 "{}".format(api_data[k][self.currency]["MKTCAP"]),\
                 #holdings
