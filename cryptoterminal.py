@@ -12,6 +12,9 @@ parser.add_argument("-rm", "--remove", help="Remove crypto currency from portfol
 parser.add_argument("-p", "--portfolio", help="View portfolio", action="store_true")
 parser.add_argument("-i","--info", help= "Get information of an or multiple crypto currencies", nargs= "+")
 parser.add_argument("-c","--convert", help="Change fiat currency")
+parser.add_argument("-w ", "--watchlist", help="Print watchlist", action="store_true")
+parser.add_argument("-aw","--addwatchlist", help="Add a coin to your watchlist", nargs= "+")
+parser.add_argument("-rmw","--removewatchlist", help="Remove coin from watchlist",nargs= "+")
 args = parser.parse_args()
 
 class CryptoTerminal():
@@ -33,6 +36,12 @@ class CryptoTerminal():
             self.print_portfolio()
         elif args.info:
             self.print_info(args.info)
+        elif args.addwatchlist:
+            self.add_watchlist(args.addwatchlist)
+        elif args.removewatchlist:
+            self.remove_watchlist(args.removewatchlist)
+        elif args.watchlist:
+            self.print_watchlist()
     
     def change_currency(self, currency):
         if currency.upper() not in self.fiat_currencies:
@@ -59,7 +68,7 @@ class CryptoTerminal():
             self.save_portfolio(portfolio_data)
         else:
             sys.exit("{} is not supported".format(symbol))
-
+    
     def remove_portfolio(self, symbol):
         portfolio_data = self.get_portfolio()
         if symbol.upper() in portfolio_data:
@@ -69,10 +78,49 @@ class CryptoTerminal():
     def save_portfolio(self, data):
         json.dump(data, open(os.path.expanduser("~/portfolio.json"), 'w'))
 
-    def get_price(self, coin):
-        coin_data = cc.get_price(coin, curr=self.currency)
-        price = coin_data[coin][self.currency]
-        return price
+    def get_watchlist(self):
+        if not os.path.exists(os.path.expanduser("~/watchlist.json")):
+            return {}
+        try:
+            return json.load(open(os.path.expanduser("~/watchlist.json")))
+        except IOError:
+            self.save_watchlist([])
+            return {}
+
+    def add_watchlist(self, coins):
+        all_coin_data = self.get_all_coins()
+        watchlist = self.get_watchlist()
+        if len(watchlist) == 0:
+            watchlist = []
+            for coin in coins:
+                if coin.upper() in watchlist:
+                    pass
+                    #print("{} is already in your watchlist".format(coin.upper()))
+                elif coin.upper() in all_coin_data:
+                    watchlist.append(coin.upper())
+                    self.save_watchlist(watchlist)
+                    #print("{} added to your watchlist".format(coin.upper())) 
+        else:
+            for coin in coins:
+                if coin.upper() in watchlist:
+                    pass
+                    #print("{} is already in your watchlist".format(coin.upper()))
+                elif coin.upper() in all_coin_data:
+                    watchlist.append(coin.upper())
+                    self.save_watchlist(watchlist)
+                    #print("{} added to your watchlist".format(coin.upper()))      
+
+    def remove_watchlist(self, coins):
+        watchlist_data = self.get_watchlist()
+        for coin in coins:
+            if coin.upper() in watchlist_data:
+                watchlist_data.remove(coin.upper())
+                #print("Removed {} from your watchlist".format(coin.upper()))
+        
+        self.save_watchlist(watchlist_data)
+
+    def save_watchlist(self, data):
+        json.dump(data, open(os.path.expanduser("~/watchlist.json"), 'w'))
 
     def print_portfolio(self):
         round_coin = 4
@@ -100,7 +148,7 @@ class CryptoTerminal():
                 #price
                 "{}".format(api_data[k][self.currency]["PRICE"]),\
                 #change
-                "{} %".format(api_data[k][self.currency]["CHANGEPCT24HOUR"]),\
+                "{}".format(api_data[k][self.currency]["CHANGEPCT24HOUR"]),\
                 #marketcap
                 "{}".format(api_data[k][self.currency]["MKTCAP"]),\
                 #holdings
@@ -137,7 +185,7 @@ class CryptoTerminal():
                 #price
                 "{}".format(api_data[coin][self.currency]["PRICE"]),\
                 #cange
-                "{}".format(api_data[coin][self.currency]["CHANGEPCT24HOUR"]),\
+                "{} %".format(api_data[coin][self.currency]["CHANGEPCT24HOUR"]),\
                 #marketcap
                 "{}".format(api_data[coin][self.currency]["MKTCAP"])\
                 ]
@@ -145,12 +193,38 @@ class CryptoTerminal():
             print(p)
         else:
             sys.exit("No supported coin found")
-        
+    
+    def print_watchlist(self):
+        watchlist = self.get_watchlist()
+
+        if len(watchlist) != 0:
+            field_names = ["Symbol","Price ({})".format(self.currency),"Change","MarketCap ({})".format(self.currency)]
+            p = PrettyTable()
+            p.field_names = field_names
+
+
+            api_data = cc.get_price(watchlist, curr=self.currency, full=True)["DISPLAY"]
+
+            for coin in watchlist:
+                p.add_row([\
+                #Name
+                "{}".format(coin),\
+                #price
+                "{}".format(api_data[coin][self.currency]["PRICE"]),\
+                #cange
+                "{} %".format(api_data[coin][self.currency]["CHANGEPCT24HOUR"]),\
+                #marketcap
+                "{}".format(api_data[coin][self.currency]["MKTCAP"])\
+                ]
+                )
+            print(p)
+        else:
+            sys.exit("No watchlist file found")
+
+
 def main():
     p = CryptoTerminal()
     p.parse_commandline()
 
 if __name__ == "__main__":
     main()
-
-        
