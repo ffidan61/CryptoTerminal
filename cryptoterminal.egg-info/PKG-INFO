@@ -1,0 +1,23 @@
+Metadata-Version: 1.1
+Name: cryptoterminal
+Version: 0.1.0
+Summary: Create and track your crypto currency portfolio from the terminal.
+Home-page: https://github.com/ffidan61/CryptoTerminal/
+Author: Furkan Fidan
+Author-email: public.fidan@gmail.com
+License: UNKNOWN
+Description: # CryptoTerminal
+        
+        Track your crypto currency porfolio in your terminal using the [CryptoCompare](https://min-api.cryptocompare.com) API.
+        
+        
+Keywords: bitcoin crypto blockchain currency money investing
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
